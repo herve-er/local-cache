@@ -1,4 +1,3 @@
-import * as e from '@actions/exec'
 import * as p from 'path'
 
 export const getCacheBase = (base: string): string => {
@@ -40,11 +39,4 @@ export const checkKey = (key: string): void => {
       `Key Validation Error: ${key} cannot contain commas.`
     )
   }
-}
-
-export const exec = async (
-  command: string
-): Promise<{stdout: string; stderr: string}> => {
-  const {stdout, stderr} = await e.getExecOutput(command)
-  return {stdout, stderr}
 }
