@@ -61,7 +61,7 @@ function run() {
                 const cachePath = core.getState('cache-path');
                 const path = core.getState('path');
                 fs.mkdirSync(cachePath, { recursive: true });
-                fs.renameSync(p.join("./", path), cachePath);
+                fs.renameSync(p.join("./", path), p.join(cachePath, path.split('/').slice(-1)[0]));
                 core.info(`Cache saved with key ${key}`);
             }
             else {
