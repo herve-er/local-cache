@@ -68,6 +68,8 @@ async function run(): Promise<void> {
         core.setOutput('cache-hit', String(cacheHit))
 
         if (cacheHit === true) {
+            fs.mkdirSync(p.join("./", path), { recursive: true });
+            fs.rmdirSync(p.join("./", path), { recursive: true });
             fs.symlinkSync(p.join(cachePath, path.split('/').slice(-1)[0]), p.join("./", path), 'dir');
             core.info(`Cache restored with key ${key}`)
         } else {
