@@ -25,8 +25,8 @@ async function run(): Promise<void> {
             const entries = fs.readdirSync(cacheBase, { withFileTypes: true });
 
             for (const entry of entries) {
-                if (!entry.isDirectory()) continue;
                 if (!entry.name.startsWith(cleanKey)) continue;
+                if (!entry.isDirectory()) continue;
 
                 const dirPath = p.join(cacheBase, entry.name);
                 try {
@@ -69,7 +69,7 @@ async function run(): Promise<void> {
 
         if (cacheHit === true) {
             fs.mkdirSync(p.join("./", path), { recursive: true });
-            fs.rmdirSync(p.join("./", path), { recursive: true });
+            fs.rmSync(p.join("./", path), { recursive: true });
             fs.symlinkSync(p.join(cachePath, path.split('/').slice(-1)[0]), p.join("./", path), 'dir');
             core.info(`Cache restored with key ${key}`)
         } else {
