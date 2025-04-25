@@ -63,6 +63,7 @@ function run() {
             const cleanKey = core.getInput('clean-key');
             const CLEAN_TIME = 7;
             if (cleanKey) {
+                core.info(`Checking for cache to clean`);
                 const now = Date.now();
                 const threshold = CLEAN_TIME * 24 * 60 * 60 * 1000; // days to ms
                 const entries = fs.readdirSync(cacheBase, { withFileTypes: true });
@@ -84,6 +85,7 @@ function run() {
                         console.error(`Failed to handle ${dirPath}:`, err);
                     }
                 }
+                core.info(`Checking for cache to clean: End`);
             }
         }
         catch (error) {
@@ -102,11 +104,14 @@ function run() {
             core.saveState('path', path);
             core.saveState('cache-base', cacheBase);
             core.saveState('cache-path', cachePath);
+            core.info(`Creating cache base`);
             fs.mkdirSync(cacheBase, { recursive: true });
+            core.info(`Checking for a cache hit`);
             const cacheHit = fs.existsSync(cachePath);
             core.saveState('cache-hit', String(cacheHit));
             core.setOutput('cache-hit', String(cacheHit));
             if (cacheHit === true) {
+                core.info(`Cache found for ${key}`);
                 fs.mkdirSync(p.join("./", path), { recursive: true });
                 fs.rmSync(p.join("./", path), { recursive: true });
                 fs.symlinkSync(p.join(cachePath, path.split('/').slice(-1)[0]), p.join("./", path), 'dir');
